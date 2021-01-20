@@ -3,7 +3,7 @@ from sqlalchemy.types import DECIMAL
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('sqlite:///sectors.db', echo=True)
+engine = create_engine('sqlite:///sectors.db', echo=False)
 
 Base = declarative_base()
 
