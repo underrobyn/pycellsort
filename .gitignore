@@ -1,0 +1,6 @@
+.idea/
+exports/
+venv/
+*.pyc
+*.csv
+src/config.py
