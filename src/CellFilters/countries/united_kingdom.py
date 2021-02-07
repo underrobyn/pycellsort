@@ -70,6 +70,9 @@ class Filter:
 		return False
 
 	def three(self, enb, sid):
+		if enb < 256:
+			return False
+
 		if 50000 < enb < 50050:
 			if sid == 16:
 				return True

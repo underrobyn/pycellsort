@@ -20,6 +20,9 @@ tests = [
 	'cf.validate("234", "10", 112758, 116) == True',
 	'cf.validate("234", "10", 112758, 117) == True',
 	'cf.validate("234", "10", 112958, 115) == True',
+	'cf.validate("234", "10", 531346, 127) == True',
+	'cf.validate("234", "10", 531346, 156) == True',
+	'cf.validate("234", "10", 531346, 165) == True',
 	'cf.validate("234", "10", 91, 10) == False',
 	'cf.validate("234", "10", 510000, 10) == False',
 
@@ -33,6 +36,8 @@ tests = [
 	'cf.validate("234", "15", 510005, 110) == False',
 
 	# 3
+	'cf.validate("234", "20", 256, 0) == True',
+	'cf.validate("234", "20", 321, 0) == True',
 	'cf.validate("234", "20", 17000, 2) == False',
 	'cf.validate("234", "20", 40000, 2) == False',
 	'cf.validate("234", "20", 49501, 2) == True',
@@ -41,6 +46,7 @@ tests = [
 
 	# Check Three's small cells
 	'cf.validate("234", "20", 50001, 16) == True',
+	'cf.validate("234", "20", 50022, 16) == True',
 	'cf.validate("234", "20", 50001, 0) == False',
 
 	# EE
@@ -57,7 +63,7 @@ for test in tests:
 	print("\n>> " + test)
 	result = eval(test)
 
-	if result == False:
+	if not result:
 		failures += 1
 
 	print(result)
