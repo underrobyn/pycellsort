@@ -1,5 +1,5 @@
-from classes.Models import Sector, Node
-from rd import CellIDStore
+from classes.PyCellDB import PyCellDB
+from classes.CellIDStore import CellIDStore
 import config as c
 
 # Load previous data if it exists
@@ -16,3 +16,6 @@ cs.read_csv(export_file)
 cs.save_store()
 
 # Update database
+db = PyCellDB()
+db.insert_cells(cs.cell_ids)
+db.commit()

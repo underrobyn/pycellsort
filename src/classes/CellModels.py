@@ -1,9 +1,6 @@
 from sqlalchemy import Column, Integer, SmallInteger, Sequence
 from sqlalchemy.types import DECIMAL
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-
-engine = create_engine('sqlite:///sectors.db', echo=False)
 
 Base = declarative_base()
 
@@ -46,8 +43,3 @@ class Node(Base):
 
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
-
-
-if __name__ == '__main__':
-	print('Creating tables')
-	Base.metadata.create_all(engine)

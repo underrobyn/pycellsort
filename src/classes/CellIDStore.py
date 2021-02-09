@@ -5,6 +5,10 @@ from os.path import isfile
 import pickle
 
 
+def get_time():
+	return round(time(), 3)
+
+
 class CellIDStore:
 
 	cell_ids = {}
@@ -41,7 +45,7 @@ class CellIDStore:
 			fp.write(pickle.dumps(self.cell_ids))
 			print('Saved main-file')
 
-		with open(self.pickle_inc_loc % self.get_time(), 'wb') as fp:
+		with open(self.pickle_inc_loc % get_time(), 'wb') as fp:
 			fp.write(pickle.dumps(self.cell_ids))
 			print('Saved backup-file')
 
@@ -69,13 +73,10 @@ class CellIDStore:
 		if mnc not in self.mnc_list[mcc]: return False
 		return True
 
-	def get_time(self):
-		return round(time(), 3)
-
 	def read_csv(self, file_loc):
 		line_counter = 0
 		allowed_counter = 0
-		st = self.get_time()
+		st = get_time()
 
 		with open(file_loc) as f:
 			line = f.readline()
@@ -84,7 +85,7 @@ class CellIDStore:
 				line_counter += 1
 
 				if line_counter % 500000 == 0:
-					print('\t%s\t%s\t%s' % (allowed_counter, line_counter, round(self.get_time() - st,3)))
+					print('\t%s\t%s\t%s' % (allowed_counter, line_counter, round(get_time() - st, 3)))
 
 				line = f.readline()
 				if ',' not in line:
