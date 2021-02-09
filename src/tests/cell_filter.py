@@ -1,7 +1,3 @@
-from CellFilters import CellFilter
-
-cf = CellFilter()
-
 tests = [
 	# Check out of bounds
 	'cf.validate("234", "10", 0, 0) == False',
@@ -57,15 +53,3 @@ tests = [
 	'cf.validate("234", "30", 15350, 5) == True',
 	'cf.validate("234", "30", 14160, 16) == True'
 ]
-
-failures = 0
-for test in tests:
-	print("\n>> " + test)
-	result = eval(test)
-
-	if not result:
-		failures += 1
-
-	print(result)
-
-print("\n%s tests completed, %s failed." % (len(tests), failures))
