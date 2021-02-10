@@ -40,6 +40,8 @@ class Node(Base):
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))
+	mean_lat = Column(DECIMAL(8, 6))
+	mean_lng = Column(DECIMAL(9, 6))
 
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)

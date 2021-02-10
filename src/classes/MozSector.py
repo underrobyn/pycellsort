@@ -9,5 +9,5 @@ class MozSector:
 
 		self.range = int(cellrange)
 		self.samples = int(samples)
-		self.created = created
-		self.updated = updated
+		self.created = int(created)
+		self.updated = int(updated)

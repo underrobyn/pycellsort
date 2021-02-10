@@ -73,7 +73,7 @@ class Filter:
 		if enb < 256:
 			return False
 
-		if 50000 < enb < 50050:
+		if 49999 < enb < 50050:
 			if sid == 16:
 				return True
 			return False

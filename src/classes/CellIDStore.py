@@ -1,5 +1,6 @@
 from classes.MozNode import MozNode
 from classes.MozSector import MozSector
+from CellFilters import CellFilter
 from time import time
 from os.path import isfile
 import pickle
@@ -10,11 +11,12 @@ def get_time():
 
 
 class CellIDStore:
-
 	cell_ids = {}
 	rat_list = ['LTE']
 	mcc_list = []
 	mnc_list = {}
+	save_backup = False
+	update_every = 1000000
 
 	pickle_loc = 'cellidstore.pickle'
 	pickle_inc_loc = 'cellidstore_ver%s.pickle'
@@ -27,6 +29,8 @@ class CellIDStore:
 		self.load_store()
 		self.create_store()
 
+		self.cell_filter = CellFilter()
+
 	def load_store(self):
 		if not isfile(self.pickle_loc):
 			print('No current database exists. We will create one later')
@@ -36,7 +40,8 @@ class CellIDStore:
 			self.cell_ids = pickle.loads(fp.read())
 
 		print('Loaded Pickle file, found keys:')
-		print(self.cell_ids.keys())
+		print(list(self.cell_ids.keys()))
+		print()
 
 	def save_store(self):
 		print('Saving data')
@@ -45,9 +50,10 @@ class CellIDStore:
 			fp.write(pickle.dumps(self.cell_ids))
 			print('Saved main-file')
 
-		with open(self.pickle_inc_loc % get_time(), 'wb') as fp:
-			fp.write(pickle.dumps(self.cell_ids))
-			print('Saved backup-file')
+		if self.save_backup:
+			with open(self.pickle_inc_loc % get_time(), 'wb') as fp:
+				fp.write(pickle.dumps(self.cell_ids))
+				print('Saved backup-file')
 
 	def create_store(self):
 		changes = False
@@ -65,7 +71,7 @@ class CellIDStore:
 					changes = True
 
 		if changes:
-			print('There have been changes to the MCC / MNC codes in the CellIDStore')
+			print('There have been changes to the MCC / MNC codes in the CellIDStore\n')
 
 	def check_allowed(self, rat, mcc, mnc):
 		if rat not in self.rat_list: return False
@@ -78,14 +84,15 @@ class CellIDStore:
 		allowed_counter = 0
 		st = get_time()
 
+		print('Started parsing file: %s\nProgress printed every %s rows' % (file_loc, self.update_every))
 		with open(file_loc) as f:
 			line = f.readline()
 
 			while line:
 				line_counter += 1
 
-				if line_counter % 500000 == 0:
-					print('\t%s\t%s\t%s' % (allowed_counter, line_counter, round(get_time() - st, 3)))
+				if line_counter % 1000000 == 0:
+					print('\t%s\t%s\t%ss' % (allowed_counter, line_counter, round(get_time() - st, 3)))
 
 				line = f.readline()
 				if ',' not in line:
@@ -99,10 +106,14 @@ class CellIDStore:
 
 				# Check cell ID won't break the decomposition function
 				cid = int(row[4])
-				if cid < 256:continue
+				if cid < 256: continue
 
 				# Decompose cell id into
 				enb, sid = self.decompose_cellid(cid)
+
+				if not self.cell_filter.validate(row[1], row[2], int(enb), int(sid)):
+					# print('Bad sector at:', row[1], row[2], enb, sid)
+					continue
 
 				# Create MozNode if not exists
 				if enb not in self.cell_ids[row[1]][row[2]]:
@@ -111,6 +122,15 @@ class CellIDStore:
 				self.cell_ids[row[1]][row[2]][enb].update_sector(
 					MozSector(sid, row[5], row[3], row[7], row[6], row[8], row[9], row[11], row[12])
 				)
+
+		print('\t%s\t%s\t%ss\nParsing Complete for: %s\n' % (allowed_counter, line_counter, round(get_time() - st, 3), file_loc))
+
+	def update_locations(self):
+		for mcc in self.cell_ids:
+			for mnc in self.cell_ids[mcc]:
+				print('Running eNB calculations for %s eNBs for %s-%s' % (len(self.cell_ids[mcc][mnc]), mcc, mnc))
+				for enb in self.cell_ids[mcc][mnc]:
+					self.cell_ids[mcc][mnc][enb].calc_loc()
 
 	def decompose_cellid(self, cid):
 		binstr = bin(cid)

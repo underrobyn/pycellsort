@@ -75,5 +75,7 @@ class PyCellDB:
 			node_id=enb,
 
 			lat=node.lat,
-			lng=node.lng
+			lng=node.lng,
+			mean_lat=node.sectors_mean_lat,
+			mean_lng=node.sectors_mean_lng
 		))
