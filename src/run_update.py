@@ -20,7 +20,7 @@ cs.update_locations()
 cs.save_store()
 
 # Update database
-db = PyCellDB()
+db = PyCellDB(driver='mysql+pymysql', user='root', password=None, host='localhost', port=3306, db='pycellsort')
 db.insert_cells(cs.cell_ids)
 db.commit()
 

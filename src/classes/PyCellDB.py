@@ -11,15 +11,14 @@ class PyCellDB:
 
 	def __init__(self, **kwargs):
 		if 'driver' in kwargs:
-			# 'mysql+pymysql'
-			self.url = URL(kwargs['driver'], kwargs['user'], kwargs['pass'], kwargs['host'], kwargs['port'], kwargs['db'])
+			self.url = URL(kwargs['driver'], kwargs['user'], kwargs['password'], kwargs['host'], kwargs['port'], kwargs['db'])
 
 			# Hack to establish SSL connection (see #231)
 			try:
-				self._engine = create_engine(self.url, echo=True, connect_args={'ssl': {'activate': True}})
+				self._engine = create_engine(self.url, echo=False, connect_args={'ssl': {'activate': True}})
 				self._engine.connect().close()
 			except InternalError:
-				self._engine = create_engine(self.url, echo=True)
+				self._engine = create_engine(self.url, echo=False)
 		else:
 			self._engine = create_engine('sqlite:///pycell.db', echo=False)
 
