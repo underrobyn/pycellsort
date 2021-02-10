@@ -3,4 +3,7 @@ exports/
 venv/
 *.pyc
 *.csv
+*.pickle
+*.db
+*.gz
 src/config.py

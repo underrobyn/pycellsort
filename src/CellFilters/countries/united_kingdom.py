@@ -9,6 +9,8 @@ class Filter:
 		self.mnc_filters["15"] = self.vodafone
 		self.mnc_filters["20"] = self.three
 		self.mnc_filters["30"] = self.ee
+		self.mnc_filters["55"] = self.sure
+		self.mnc_filters["58"] = self.manx
 
 	def validate(self, mnc, enb, sid):
 		if mnc not in self.mnc_filters:
@@ -95,3 +97,13 @@ class Filter:
 			return True
 
 		return False
+
+	def sure(self, enb, sid):
+		if enb > 300:
+			return False
+		return True
+
+	def manx(self, enb, sid):
+		if enb > 99:
+			return False
+		return True
