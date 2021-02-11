@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, SmallInteger, Sequence
+from sqlalchemy import Column, Integer, SmallInteger, Sequence, Index, UniqueConstraint, ForeignKeyConstraint
 from sqlalchemy.types import DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -10,12 +10,12 @@ class Sector(Base):
 
 	id = Column(Integer, Sequence('sector_id_seq'), primary_key=True)
 
-	mcc = Column(SmallInteger)
-	mnc = Column(SmallInteger, index=True)
+	mcc = Column(SmallInteger, nullable=False)
+	mnc = Column(SmallInteger, nullable=False)
 
-	node_id = Column(Integer, index=True)
-	sector_id = Column(SmallInteger)
-	pci = Column(SmallInteger)
+	node_id = Column(Integer, nullable=False)
+	sector_id = Column(SmallInteger, nullable=False)
+	pci = Column(SmallInteger, nullable=False)
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))
@@ -26,7 +26,13 @@ class Sector(Base):
 	updated = Column(Integer)
 
 	def __repr__(self):
-		return "<Sectors(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
+		return "<Sector(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
+
+	__table_args__ = (
+		Index('sectors_index', 'mcc', 'mnc', 'node_id', 'sector_id'),
+		UniqueConstraint('mcc', 'mnc', 'node_id', 'sector_id', name='unique_sector'),
+    	ForeignKeyConstraint(['mcc', 'mnc', 'node_id',], ['nodes.mcc', 'nodes.mnc', 'nodes.node_id'])
+	)
 
 
 class Node(Base):
@@ -34,15 +40,21 @@ class Node(Base):
 
 	id = Column(Integer, Sequence('node_id_seq'), primary_key=True)
 
-	mcc = Column(SmallInteger)
-	mnc = Column(SmallInteger, index=True)
+	mcc = Column(SmallInteger, nullable=False)
+	mnc = Column(SmallInteger, nullable=False)
 
-	node_id = Column(Integer, index=True)
+	node_id = Column(Integer, nullable=False)
 
-	lat = Column(DECIMAL(8, 6))
-	lng = Column(DECIMAL(9, 6))
+	lat = Column(DECIMAL(8, 6), nullable=False)
+	lng = Column(DECIMAL(9, 6), nullable=False)
+
 	mean_lat = Column(DECIMAL(8, 6))
 	mean_lng = Column(DECIMAL(9, 6))
 
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
+
+	__table_args__ = (
+		Index('nodes_index', 'mcc', 'mnc', 'node_id'),
+		UniqueConstraint('mcc', 'mnc', 'node_id', name='unique_node')
+	)

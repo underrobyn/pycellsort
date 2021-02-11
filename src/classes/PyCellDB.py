@@ -64,11 +64,7 @@ class PyCellDB:
 	def __insert_node(self, mcc, mnc, enb):
 		node = self.cell_ids[mcc][mnc][enb]
 
-		# Add all sectors for a node
-		for sector in node.sectors:
-			self.__insert_sector(mcc, mnc, enb, node.sectors[sector])
-
-		# Add the node itself
+		# Add the node itself first to prevent referential integrity errors
 		self._db.add(Node(
 			mcc=mcc,
 			mnc=mnc,
@@ -79,3 +75,7 @@ class PyCellDB:
 			mean_lat=node.sectors_mean_lat,
 			mean_lng=node.sectors_mean_lng
 		))
+
+		# Add all sectors for a node
+		for sector in node.sectors:
+			self.__insert_sector(mcc, mnc, enb, node.sectors[sector])
