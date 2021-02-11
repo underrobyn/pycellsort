@@ -54,6 +54,7 @@ class PyCellDB:
 
 			lat=sector.lat,
 			lng=sector.lng,
+			range=sector.range,
 
 			samples=sector.samples,
 			created=sector.created,

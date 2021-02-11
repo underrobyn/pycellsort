@@ -11,14 +11,15 @@ class Sector(Base):
 	id = Column(Integer, Sequence('sector_id_seq'), primary_key=True)
 
 	mcc = Column(SmallInteger)
-	mnc = Column(SmallInteger)
+	mnc = Column(SmallInteger, index=True)
 
-	node_id = Column(Integer)
+	node_id = Column(Integer, index=True)
 	sector_id = Column(SmallInteger)
 	pci = Column(SmallInteger)
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))
+	range = Column(Integer)
 
 	samples = Column(Integer)
 	created = Column(Integer)
@@ -34,9 +35,9 @@ class Node(Base):
 	id = Column(Integer, Sequence('node_id_seq'), primary_key=True)
 
 	mcc = Column(SmallInteger)
-	mnc = Column(SmallInteger)
+	mnc = Column(SmallInteger, index=True)
 
-	node_id = Column(Integer)
+	node_id = Column(Integer, index=True)
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))

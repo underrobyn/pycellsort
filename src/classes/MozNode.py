@@ -23,8 +23,20 @@ class MozNode:
 
 	def update_sector(self, sector):
 		if sector.sector_id in self.sectors:
-			# print('Duplicate sector, %s-%s-> %s:%s' % (self.mcc, self.mnc, self.node_id, sector.sector_id))
-			pass
+			old_sector = self.sectors[sector.sector_id]
+
+			# Change time details
+			if sector.updated > old_sector.updated:
+				self.sectors[sector.sector_id].updated = old_sector.updated
+			if sector.created < old_sector.created:
+				self.sectors[sector.sector_id].created = old_sector.created
+
+			# If new sector has more samples we assume its location is better
+			if sector.samples > old_sector.samples:
+				self.sectors[sector.sector_id].lat = sector.lat
+				self.sectors[sector.sector_id].lng = sector.lng
+
+		# print('Duplicate sector, %s-%s-> %s:%s' % (self.mcc, self.mnc, self.node_id, sector.sector_id))
 		else:
 			self.sectors[sector.sector_id] = sector
 			self.sector_count += 1
