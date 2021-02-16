@@ -45,16 +45,16 @@ class MozNode:
 			self.sector_count += 1
 
 	def update_node_meta(self):
-		for sector in self.sectors:
-			this_sector = self.sectors[sector.sector_id]
+		for sector_id in self.sectors:
+			sector = self.sectors[sector_id]
 
 			if sector.updated > self.updated:
-				self.updated = this_sector.updated
+				self.updated = sector.updated
 
 			if sector.created < self.created:
-				self.created = this_sector.created
+				self.created = sector.created
 
-			self.samples += this_sector.samples
+			self.samples += sector.samples
 
 	def calc_sector_stats(self):
 		lats = []

@@ -31,7 +31,7 @@ class Sector(Base):
 	__table_args__ = (
 		Index('sectors_index', 'mcc', 'mnc', 'node_id', 'sector_id'),
 		UniqueConstraint('mcc', 'mnc', 'node_id', 'sector_id', name='unique_sector'),
-    	ForeignKeyConstraint(['mcc', 'mnc', 'node_id',], ['nodes.mcc', 'nodes.mnc', 'nodes.node_id'])
+    	# ForeignKeyConstraint(['mcc', 'mnc', 'node_id',], ['nodes.mcc', 'nodes.mnc', 'nodes.node_id'])
 	)
 
 
