@@ -12,9 +12,10 @@ cs = CellIDStore(c.ALLOWED_RATS, c.ALLOWED_MCCS, c.ALLOWED_MNCS)
 
 
 # Update data
-export_file = c.EXPORTS_DIR + 'MLS-full-cell-export-2021-02-10T000000.csv'
-cs.read_csv(export_file)
-cs.update_locations()
+cs.read_csv(c.EXPORTS_DIR + 'cell_towers_2021-01-22-T000000.csv')
+cs.read_csv(c.EXPORTS_DIR + 'MLS-full-cell-export-2020-02-22T000000.csv')
+cs.read_csv(c.EXPORTS_DIR + 'MLS-full-cell-export-2021-02-16T000000.csv')
+cs.update_node_meta()
 
 # Save data
 cs.save_store()

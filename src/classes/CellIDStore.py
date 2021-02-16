@@ -125,11 +125,12 @@ class CellIDStore:
 
 		print('\t%s\t%s\t%ss\nParsing Complete for: %s\n' % (allowed_counter, line_counter, round(get_time() - st, 3), file_loc))
 
-	def update_locations(self):
+	def update_node_meta(self):
 		for mcc in self.cell_ids:
 			for mnc in self.cell_ids[mcc]:
 				print('Running eNB calculations for %s eNBs for %s-%s' % (len(self.cell_ids[mcc][mnc]), mcc, mnc))
 				for enb in self.cell_ids[mcc][mnc]:
+					self.cell_ids[mcc][mnc][enb].update_node_meta()
 					self.cell_ids[mcc][mnc][enb].calc_loc()
 
 	def decompose_cellid(self, cid):

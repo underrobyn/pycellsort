@@ -51,8 +51,12 @@ class Node(Base):
 	mean_lat = Column(DECIMAL(8, 6))
 	mean_lng = Column(DECIMAL(9, 6))
 
+	samples = Column(Integer)
+	created = Column(Integer)
+	updated = Column(Integer)
+
 	def __repr__(self):
-		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
+		return "<Node(mcc='%s', mnc='%s' id='%s', enb='%s')>" % (self.mcc, self.mnc, self.id, self.node_id)
 
 	__table_args__ = (
 		Index('nodes_index', 'mcc', 'mnc', 'node_id'),

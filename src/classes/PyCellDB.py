@@ -27,6 +27,9 @@ class PyCellDB:
 
 		# Create the schema on the database. It won't replace any existing schema
 		Base.metadata.create_all(self._engine)
+	
+	def get_session(self):
+		return self._db
 
 	def commit(self):
 		print('Saving changes to db')
@@ -73,7 +76,11 @@ class PyCellDB:
 			lat=node.lat,
 			lng=node.lng,
 			mean_lat=node.sectors_mean_lat,
-			mean_lng=node.sectors_mean_lng
+			mean_lng=node.sectors_mean_lng,
+
+			samples=node.samples,
+			created=node.created,
+			updated=node.updated
 		))
 
 		# Add all sectors for a node
