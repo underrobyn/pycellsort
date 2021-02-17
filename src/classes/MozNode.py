@@ -51,7 +51,7 @@ class MozNode:
 			if sector.updated > self.updated:
 				self.updated = sector.updated
 
-			if sector.created < self.created:
+			if sector.created < self.created or self.created == 0:
 				self.created = sector.created
 
 			self.samples += sector.samples
