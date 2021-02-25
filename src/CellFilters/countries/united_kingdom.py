@@ -5,6 +5,7 @@ class Filter:
 		return "<CellFilter(UK)>"
 
 	def __init__(self):
+		self.mnc_filters["4"] = self.other
 		self.mnc_filters["10"] = self.o2
 		self.mnc_filters["15"] = self.vodafone
 		self.mnc_filters["20"] = self.three
@@ -106,4 +107,7 @@ class Filter:
 	def manx(self, enb, sid):
 		if enb > 99:
 			return False
+		return True
+
+	def other(self, enb, sid):
 		return True
