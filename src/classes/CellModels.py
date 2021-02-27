@@ -15,7 +15,7 @@ class Sector(Base):
 
 	node_id = Column(Integer, nullable=False)
 	sector_id = Column(SmallInteger, nullable=False)
-	pci = Column(SmallInteger, nullable=False)
+	pci = Column(SmallInteger, default=-1, nullable=False)
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))
