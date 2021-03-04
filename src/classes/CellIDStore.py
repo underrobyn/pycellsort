@@ -10,6 +10,14 @@ def get_time():
 	return round(time(), 3)
 
 
+def decompose_cellid(cid):
+	binstr = bin(cid)
+	sid = str(int(binstr[-8:], 2))
+	nid = str(int(binstr[:-8], 2))
+
+	return nid, sid
+
+
 class CellIDStore:
 	cell_ids = {}
 	rat_list = ['LTE']
@@ -84,6 +92,7 @@ class CellIDStore:
 		allowed_counter = 0
 		st = get_time()
 
+		# https://codereview.stackexchange.com/questions/79449/need-fast-csv-parser-for-python-to-parse-80gb-csv-file
 		print('Started parsing file: %s\nProgress printed every %s rows' % (file_loc, self.update_every))
 		with open(file_loc) as f:
 			line = f.readline()
@@ -109,7 +118,7 @@ class CellIDStore:
 				if cid < 256: continue
 
 				# Decompose cell id into
-				enb, sid = self.decompose_cellid(cid)
+				enb, sid = decompose_cellid(cid)
 
 				if not self.cell_filter.validate(row[1], row[2], int(enb), int(sid)):
 					# print('Bad sector at:', row[1], row[2], enb, sid)
@@ -132,10 +141,3 @@ class CellIDStore:
 				for enb in self.cell_ids[mcc][mnc]:
 					self.cell_ids[mcc][mnc][enb].update_node_meta()
 					self.cell_ids[mcc][mnc][enb].calc_loc()
-
-	def decompose_cellid(self, cid):
-		binstr = bin(cid)
-		sid = str(int(binstr[-8:], 2))
-		nid = str(int(binstr[:-8], 2))
-
-		return nid, sid

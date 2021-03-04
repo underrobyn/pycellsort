@@ -1,6 +1,7 @@
 class CellFilter:
 	modules = {
 		"234": "united_kingdom",
+		"262": "germany",
 		"368": "cuba"
 	}
 	loaded = {}
