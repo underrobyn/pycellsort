@@ -30,20 +30,24 @@ class Filter:
 		if sid not in valid_sectors:
 			return False
 
-		if enb < 200000:
+		if enb < 200000 and 60000 >= enb > 70000:
 			return False
 
 		return True
 
 	def telekom(self, enb, sid):
 		valid_sectors = (
-			0, 1, 2,		# L08, L09 or L26
-			3, 4, 5,		# L09 or L26
-			6, 7, 8,		# L26 or L18
-			15, 16, 17		# L21
+			0, 1, 2,
+			3, 4, 5,
+			6, 7, 8,
+			9, 10, 11,
+			15, 16, 17
 		)
 
 		if sid not in valid_sectors:
+			return False
+
+		if enb < 100000:
 			return False
 
 		return True
@@ -66,10 +70,10 @@ class Filter:
 			61, 62, 63			# L26 OpenRAN
 		)
 
-		if sid not in valid_sectors or sid not in valid_or_sectors:
+		if sid not in valid_sectors and sid not in valid_or_sectors:
 			return False
 
-		if 1000 <= enb <= 200000:
+		if 10000 >= enb >= 200000:
 			return False
 
 		return True

@@ -29,7 +29,7 @@ class Filter:
 		if sid not in valid_sectors:
 			return False
 
-		if 180000 > enb < 160000:
+		if 190000 > enb < 160000:
 			return False
 
 		return True
