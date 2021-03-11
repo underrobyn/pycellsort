@@ -1,5 +1,11 @@
 from os import sep
 
+# Database logins
+db_user = 'root'
+db_password = None
+db_addr = 'localhost'
+db_port = 3306
+
 # API keys
 OCID_API_KEY = ''
 
