@@ -91,9 +91,8 @@ class Filter:
 
 	def ee(self, enb, sid):
 		if 10000 < enb < 40000:
-			if sid > 20:
-				if sid not in (21, 24):
-					return False
+			if sid > 24:
+				return False
 
 			return True
 
