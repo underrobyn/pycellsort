@@ -2,6 +2,7 @@ from classes.MozNode import MozNode
 from classes.MozSector import MozSector
 from CellFilters import CellFilter
 from time import time
+from functools import lru_cache
 from os.path import isfile
 import pickle
 
@@ -81,6 +82,8 @@ class CellIDStore:
 		if changes:
 			print('There have been changes to the MCC / MNC codes in the CellIDStore\n')
 
+	# TODO: Enable when lists are larger, currently makes performance worse by a few ms
+	# @lru_cache(maxsize=256)
 	def check_allowed(self, rat, mcc, mnc):
 		if rat not in self.rat_list: return False
 		if mcc not in self.mcc_list: return False
@@ -132,7 +135,8 @@ class CellIDStore:
 					MozSector(sid, row[5], row[3], row[7], row[6], row[8], row[9], row[11], row[12])
 				)
 
-		print('\t%s\t%s\t%ss\nParsing Complete for: %s\n' % (allowed_counter, line_counter, round(get_time() - st, 3), file_loc))
+		print('Parsing Complete for: %s\n\t- Total rows: %s\n\t- Total stored: %s\n\t- Time taken: %ss\n' %
+			  (file_loc, line_counter, allowed_counter, round(get_time() - st, 4)))
 
 	def update_node_meta(self):
 		for mcc in self.cell_ids:
