@@ -21,9 +21,14 @@ def decompose_cellid(cid):
 
 class CellIDStore:
 	cell_ids = {}
+
 	rat_list = ['LTE']
 	mcc_list = []
 	mnc_list = {}
+
+	_file_list = set()
+	_changes = False
+
 	save_backup = False
 	update_every = 1000000
 
@@ -65,21 +70,21 @@ class CellIDStore:
 				print('Saved backup-file')
 
 	def create_store(self):
-		changes = False
+		self._changes = False
 
 		for mcc in self.mcc_list:
 			if mcc not in self.cell_ids:
 				print('MCC created!', mcc)
 				self.cell_ids[mcc] = {}
-				changes = True
+				self._changes = True
 
 			for mnc in self.mnc_list[mcc]:
 				if mnc not in self.cell_ids[mcc]:
 					print('MNC created!', mcc, mnc)
 					self.cell_ids[mcc][mnc] = {}
-					changes = True
+					self._changes = True
 
-		if changes:
+		if self._changes:
 			print('There have been changes to the MCC / MNC codes in the CellIDStore\n')
 
 	# TODO: Enable when lists are larger, currently makes performance worse by a few ms
@@ -90,14 +95,33 @@ class CellIDStore:
 		if mnc not in self.mnc_list[mcc]: return False
 		return True
 
-	def read_csv(self, file_loc):
+	def check_file_processed(self, file_name):
+		# If file name in list, don't re-process it unless new MCC / MNC added
+		if file_name in self._file_list:
+			if self._changes:
+				return True
+
+			# There were no changes so return False
+			return False
+
+		# If file not previously processed, add name to list
+		self._file_list.add(file_name)
+
+		return True
+
+	def read_csv(self, dir_name, file_name):
 		line_counter = 0
 		allowed_counter = 0
 		st = get_time()
 
+		# TODO: Could change this to use a hash of file instead of file name?
+		if not self.check_file_processed(file_name):
+			print('Skipping parsing of file %s' % file_name)
+			return
+
 		# https://codereview.stackexchange.com/questions/79449/need-fast-csv-parser-for-python-to-parse-80gb-csv-file
-		print('Started parsing file: %s\nProgress printed every %s rows' % (file_loc, self.update_every))
-		with open(file_loc) as f:
+		print('Started parsing file: %s\nProgress printed every %s rows' % (file_name, self.update_every))
+		with open(dir_name + file_name) as f:
 			line = f.readline()
 
 			while line:
@@ -136,7 +160,7 @@ class CellIDStore:
 				)
 
 		print('Parsing Complete for: %s\n\t- Total rows: %s\n\t- Total stored: %s\n\t- Time taken: %ss\n' %
-			  (file_loc, line_counter, allowed_counter, round(get_time() - st, 4)))
+			  (file_name, line_counter, allowed_counter, round(get_time() - st, 4)))
 
 	def update_node_meta(self):
 		for mcc in self.cell_ids:

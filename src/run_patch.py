@@ -21,8 +21,6 @@ cs.read_csv(file_to_patch)
 # TODO: Write function to only update meta for nodes that changed
 cs.update_node_meta()
 
-# Save data
-cs.save_store()
 
 # Update database
 db = PyCellDB(driver='mysql+pymysql', user=c.db_user, password=c.db_password, host=c.db_addr, port=c.db_port, db='pycellsort')
