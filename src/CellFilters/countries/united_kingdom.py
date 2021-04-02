@@ -10,6 +10,7 @@ class Filter:
 		self.mnc_filters["15"] = self.vodafone
 		self.mnc_filters["20"] = self.three
 		self.mnc_filters["30"] = self.ee
+		self.mnc_filters["31"] = self.ee
 		self.mnc_filters["55"] = self.sure
 		self.mnc_filters["58"] = self.manx
 
@@ -29,13 +30,13 @@ class Filter:
 			117, 127, 137, 147, 157, 167   	# L23-C2
 		)
 		valid_o2_host = (
-			110, 120, 130, 140, 150, 160,  # L08
-			112, 122, 132, 142, 152, 162,  # L09
-			114, 124, 134, 144, 154, 164,  # L18
-			115, 125, 135, 145, 155, 165,  # L21
-			116, 126, 136, 146, 156, 166,  # L23-C1
-			117, 127, 137, 147, 157, 167  # L23-C2
-			# 118, 128, 138	# L26 TDD?
+			110, 120, 130, 140, 150, 160,  	# L08
+			112, 122, 132, 142, 152, 162,  	# L09
+			114, 124, 134, 144, 154, 164,  	# L18
+			115, 125, 135, 145, 155, 165,  	# L21
+			116, 126, 136, 146, 156, 166,  	# L23-C1
+			117, 127, 137, 147, 157, 167,  	# L23-C2
+			118, 128, 138					# L26 TDD?
 		)
 
 		if (3 < enb < 15000 or 100000 < enb < 115000) and sid in valid_vf_host:
@@ -48,8 +49,9 @@ class Filter:
 
 	def vodafone(self, enb, sid):
 		valid_vf_host = (
+			1, 2, 3, 4, 5, 6, 7, 8, 9,	# DAS Exceptions
 			10, 20, 30, 40, 50, 60,		# L08
-			21,  # Exception for DAS
+			21, 22,						# DAS Exceptions
 			12, 22, 32, 42, 52, 62,		# L09
 			14, 24, 34, 44, 54, 64,		# L21
 			16, 26, 36, 46, 56, 66,		# L18
