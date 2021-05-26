@@ -11,6 +11,7 @@ class Filter:
 		self.mnc_filters["20"] = self.three
 		self.mnc_filters["30"] = self.ee
 		self.mnc_filters["31"] = self.ee
+		self.mnc_filters["32"] = self.ee
 		self.mnc_filters["55"] = self.sure
 		self.mnc_filters["58"] = self.manx
 
@@ -86,7 +87,7 @@ class Filter:
 		if enb > 15100 and not 49000 < enb < 49999:
 			return False
 
-		if sid not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 71, 72, 73, 74, 75, 76):
+		if sid not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 71, 72, 73, 74, 75, 76, 91, 92, 93):
 			return False
 
 		return True
