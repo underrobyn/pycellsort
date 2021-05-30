@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, SmallInteger, Sequence, Index, UniqueConstraint, ForeignKeyConstraint
+from sqlalchemy import Column, Sequence, Index, UniqueConstraint
 from sqlalchemy.types import DECIMAL
+from sqlalchemy.dialects.mysql import TINYINT, INTEGER, SMALLINT, MEDIUMINT
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -8,22 +9,22 @@ Base = declarative_base()
 class Sector(Base):
 	__tablename__ = 'sectors'
 
-	id = Column(Integer, Sequence('sector_id_seq'), primary_key=True)
+	id = Column(INTEGER(unsigned=True), Sequence('sector_id_seq'), primary_key=True)
 
-	mcc = Column(SmallInteger, nullable=False)
-	mnc = Column(SmallInteger, nullable=False)
+	mcc = Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = Column(Integer, nullable=False)
-	sector_id = Column(SmallInteger, nullable=False)
-	pci = Column(SmallInteger, default=-1, nullable=False)
+	node_id = Column(INTEGER(unsigned=True), nullable=False)
+	sector_id = Column(TINYINT(unsigned=True), nullable=False)
+	pci = Column(SMALLINT(unsigned=True), default=-1, nullable=False)
 
 	lat = Column(DECIMAL(8, 6))
 	lng = Column(DECIMAL(9, 6))
-	range = Column(Integer)
+	range = Column(MEDIUMINT(unsigned=True))
 
-	samples = Column(Integer)
-	created = Column(Integer)
-	updated = Column(Integer)
+	samples = Column(MEDIUMINT(unsigned=True))
+	created = Column(INTEGER(unsigned=True))
+	updated = Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Sector(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
@@ -38,12 +39,12 @@ class Sector(Base):
 class Node(Base):
 	__tablename__ = 'nodes'
 
-	id = Column(Integer, Sequence('node_id_seq'), primary_key=True)
+	id = Column(INTEGER(unsigned=True), Sequence('node_id_seq'), primary_key=True)
 
-	mcc = Column(SmallInteger, nullable=False)
-	mnc = Column(SmallInteger, nullable=False)
+	mcc = Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = Column(Integer, nullable=False)
+	node_id = Column(INTEGER(unsigned=True), nullable=False)
 
 	lat = Column(DECIMAL(8, 6), nullable=False)
 	lng = Column(DECIMAL(9, 6), nullable=False)
@@ -51,9 +52,9 @@ class Node(Base):
 	mean_lat = Column(DECIMAL(8, 6))
 	mean_lng = Column(DECIMAL(9, 6))
 
-	samples = Column(Integer)
-	created = Column(Integer)
-	updated = Column(Integer)
+	samples = Column(MEDIUMINT(unsigned=True))
+	created = Column(INTEGER(unsigned=True))
+	updated = Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Node(mcc='%s', mnc='%s' id='%s', enb='%s')>" % (self.mcc, self.mnc, self.id, self.node_id)
