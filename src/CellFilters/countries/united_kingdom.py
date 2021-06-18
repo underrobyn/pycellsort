@@ -79,12 +79,12 @@ class Filter:
 		if enb < 256:
 			return False
 
-		if 49999 < enb < 50050:
+		if 49999 < enb < 50025:
 			if sid == 16:
 				return True
 			return False
 
-		if enb > 15100 and not 49000 < enb < 49999:
+		if enb > 15100 and not (49000 < enb < 49999 or 50025 < enb < 51000):
 			return False
 
 		if sid not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 71, 72, 73, 74, 75, 76, 91, 92, 93):
