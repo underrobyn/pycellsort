@@ -3,7 +3,8 @@ class CellFilter:
 		"234": "united_kingdom",
 		"238": "denmark",
 		"262": "germany",
-		"368": "cuba"
+		"368": "cuba",
+		"621": "nigeria"
 	}
 	loaded = {}
 	filters = {}

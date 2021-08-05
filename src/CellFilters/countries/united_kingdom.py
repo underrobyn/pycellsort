@@ -31,6 +31,7 @@ class Filter:
 			117, 127, 137, 147, 157, 167   	# L23-C2
 		)
 		valid_o2_host = (
+			23, 68, 						# Spidercloud cells
 			110, 120, 130, 140, 150, 160,  	# L08
 			112, 122, 132, 142, 152, 162,  	# L09
 			114, 124, 134, 144, 154, 164,  	# L18
@@ -94,7 +95,7 @@ class Filter:
 
 	def ee(self, enb, sid):
 		if 10000 < enb < 40000:
-			if sid > 24:
+			if sid > 24 and sid not in (30, 31, 32):
 				return False
 
 			return True
