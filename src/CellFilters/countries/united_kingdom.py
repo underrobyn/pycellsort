@@ -38,7 +38,8 @@ class Filter:
 			115, 125, 135, 145, 155, 165,  	# L21
 			116, 126, 136, 146, 156, 166,  	# L23-C1
 			117, 127, 137, 147, 157, 167,  	# L23-C2
-			118, 128, 138					# L26 TDD?
+			118, 128, 138,					# L26 TDD
+			119, 129, 139					# L07
 		)
 
 		if (3 < enb < 15000 or 100000 < enb < 115000) and sid in valid_vf_host:
@@ -68,10 +69,10 @@ class Filter:
 			18, 28, 38, 48, 58, 68,		# L26
 		)
 
-		if 3 < enb < 15000 and sid in valid_vf_host:
+		if 3 < enb < 14500 and sid in valid_vf_host:
 			return True
 
-		if 500000 < enb < 550000 and sid in valid_o2_host:
+		if 500000 < enb < 545000 and sid in valid_o2_host:
 			return True
 
 		return False
@@ -85,7 +86,11 @@ class Filter:
 				return True
 			return False
 
-		if enb > 15100 and not (49000 < enb < 49999 or 50025 < enb < 51000):
+		# Three's 8xxxx eNB DASes
+		if 80000 < enb < 80100:
+			return False
+
+		if enb > 15000 and not (49000 < enb < 49999 or 50025 < enb < 51500):
 			return False
 
 		if sid not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 71, 72, 73, 74, 75, 76, 91, 92, 93):
